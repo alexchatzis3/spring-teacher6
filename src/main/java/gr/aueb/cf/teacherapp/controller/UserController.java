@@ -22,13 +22,14 @@ public class UserController {
     private final UserService userService;
     private final Mapper mapper;
 
+    // Display the user insertion form
     @GetMapping("/users/register")
     public String getUserForm(Model model) {
         model.addAttribute("userInsertDTO", new UserInsertDTO());
         return "user-form";
     }
 
-
+    // Process the form submission
     @PostMapping("/users/register")
     public String insertUser(@Valid @ModelAttribute("userInsertDTO")UserInsertDTO userInsertDTO,
                              BindingResult bindingResult,
@@ -39,6 +40,7 @@ public class UserController {
 
         }
 
+        // Convert DTO to User entity and save (here you also encrypt the password)
         User user = mapper.mapToUserEntity(userInsertDTO);
         userService.saveUser(user);
         return "redirect:/users/register?success";
